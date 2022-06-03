@@ -38,8 +38,8 @@ class UserRepository implements UserRepositoryInterface
 
     public function attachLecture($user, $request)
     {
-        if (!$user->lectures()->where('lecture_id', '=', $request->lecture_id)->exists()) {
-            return $user->lectures()->attach($request->lecture_id);
+        if (!$user->lectures()->where('lecture_id', $request['lecture_id'])->exists()) {
+            return $user->lectures()->attach($request['lecture_id']);
         }
     }
 }

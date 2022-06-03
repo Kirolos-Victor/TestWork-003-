@@ -38,8 +38,8 @@ class LectureRepository implements LectureRepositoryInterface
 
     public function attachUser($lecture, $request)
     {
-        if (!$lecture->users()->where('user_id', '=', $request->user_id)->exists()) {
-            return $lecture->users()->attach($request->user_id);
+        if (!$lecture->users()->where('user_id', $request['user_id'])->exists()) {
+            return $lecture->users()->attach($request['user_id']);
         }
     }
 }
