@@ -7,9 +7,10 @@ class LectureResource extends JsonResource
 {
     public function toArray($request)
     {
+        $data['id'] = $this->id;
         $data['name'] = $this->name;
-        if ($this->users()->exists()) {
-            $data['pivot'] = $this->users()->get()->pluck('pivot');
+        if ($request->isMethod('post') && $this->users()->exists()) {
+            $data['users'] = UserCollection::collection($this->users);
         }
         return $data;
     }

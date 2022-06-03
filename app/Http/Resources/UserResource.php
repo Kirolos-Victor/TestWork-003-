@@ -7,10 +7,11 @@ class UserResource extends JsonResource
 {
     public function toArray($request)
     {
+        $data['id'] = $this->id;
         $data['name'] = $this->name;
         $data['email'] = $this->email;
-        if ($this->lectures()->exists()) {
-            $data['pivot'] = $this->lectures()->get()->pluck('pivot');
+        if ($request->isMethod('post') && $this->lectures()->exists()) {
+            $data['lectures'] = LectureCollection::collection($this->lectures);
         }
         return $data;
     }
