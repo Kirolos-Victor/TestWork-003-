@@ -9,8 +9,6 @@ use App\Http\Requests\UserIndexRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\UserRepository;
-use App\Services\SearchAndSort;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -47,7 +45,6 @@ class UserController extends Controller
 
     public function attachLecture(LectureRequest $request, User $user)
     {
-        $user->load('lectures');
         $this->userRepository->attachLecture($user, $request->validated());
         return responseJson(200, 'Attached successfully', new UserResource($user));
     }

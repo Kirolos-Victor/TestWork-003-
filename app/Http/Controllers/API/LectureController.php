@@ -9,8 +9,6 @@ use App\Http\Requests\UserRequest;
 use App\Http\Resources\LectureResource;
 use App\Models\Lecture;
 use App\Repositories\LectureRepository;
-use App\Services\SearchAndSort;
-use Illuminate\Http\Request;
 
 class LectureController extends Controller
 {
