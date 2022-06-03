@@ -22,30 +22,30 @@ class UserController extends Controller
     public function index(UserIndexRequest $request)
     {
         $users = $this->userRepository->index($request->validated());
-        return responseJson(200, 'success', $users);
+        return responseJson(200, 'success', UserResource::collection($users));
     }
 
     public function store(StoreUserRequest $request)
     {
         $user = $this->userRepository->store($request->validated());
-        return responseJson(200, 'Created successfully', new UserResource($user));
+        return responseJson(200, 'Created successfully', UserResource::make($user));
     }
 
     public function update(UpdateUserRequest $request, User $user)
     {
         $this->userRepository->update($request->validated(), $user);
-        return responseJson(200, 'Updated successfully', new UserResource($user));
+        return responseJson(200, 'Updated successfully', UserResource::make($user));
     }
 
     public function destroy(User $user)
     {
         $this->userRepository->destroy($user);
-        return responseJson(200, 'Deleted successfully', new UserResource($user));
+        return responseJson(200, 'Deleted successfully', UserResource::make($user));
     }
 
     public function attachLecture(LectureRequest $request, User $user)
     {
         $this->userRepository->attachLecture($user, $request->validated());
-        return responseJson(200, 'Attached successfully', new UserResource($user));
+        return responseJson(200, 'Attached successfully', UserResource::make($user));
     }
 }
