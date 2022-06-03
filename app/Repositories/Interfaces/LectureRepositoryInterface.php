@@ -3,7 +3,7 @@ namespace App\Repositories\Interfaces;
 
 interface LectureRepositoryInterface
 {
-    public function index($searchAndSort, $request);
+    public function index($request);
 
     public function store($request);
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LectureRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UserIndexRequest;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\SearchAndSort;
@@ -19,21 +20,21 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function index(SearchAndSort $searchAndSort, Request $request)
+    public function index(UserIndexRequest $request)
     {
-        $users = $this->userRepository->index($searchAndSort, $request);
+        $users = $this->userRepository->index($request->validated());
         return responseJson(200, 'success', $users);
     }
 
     public function store(StoreUserRequest $request)
     {
-        $user = $this->userRepository->store($request);
+        $user = $this->userRepository->store($request->validated());
         return responseJson(200, 'Created successfully', $user);
     }
 
     public function update(UpdateUserRequest $request, User $user)
     {
-        $this->userRepository->update($request, $user);
+        $this->userRepository->update($request->validated(), $user);
         return responseJson(200, 'Updated successfully', $user);
     }
 
@@ -46,7 +47,7 @@ class UserController extends Controller
     public function attachLecture(LectureRequest $request, User $user)
     {
         $user->load('lectures');
-        $this->userRepository->attachLecture($user, $request);
+        $this->userRepository->attachLecture($user, $request->validated());
         return responseJson(200, 'Attached successfully', $user);
     }
 }

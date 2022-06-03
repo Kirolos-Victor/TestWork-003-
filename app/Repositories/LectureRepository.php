@@ -3,29 +3,32 @@ namespace App\Repositories;
 
 use App\Models\Lecture;
 use App\Repositories\Interfaces\LectureRepositoryInterface;
+use App\Services\SearchAndSort;
 
 class LectureRepository implements LectureRepositoryInterface
 {
     protected $lecture;
+    protected $searchAndSort;
 
-    public function __construct(Lecture $lecture)
+    public function __construct(SearchAndSort $searchAndSort, Lecture $lecture)
     {
-        return $this->lecture = $lecture;
+        $this->lecture = $lecture;
+        $this->searchAndSort = $searchAndSort;
     }
 
-    public function index($searchAndSort, $request)
+    public function index($request)
     {
-        return $searchAndSort->execute($request, $this->lecture);
+        return $this->searchAndSort->execute($request, $this->lecture);
     }
 
     public function store($request)
     {
-        return $this->lecture::create($request->validated());
+        return $this->lecture::create($request);
     }
 
     public function update($request, $lecture)
     {
-        return $lecture->update($request->validated());
+        return $lecture->update($request);
     }
 
     public function destroy($lecture)

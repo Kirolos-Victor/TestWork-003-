@@ -3,29 +3,32 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Services\SearchAndSort;
 
 class UserRepository implements UserRepositoryInterface
 {
     protected $user;
+    protected $searchAndSort;
 
-    public function __construct(User $user)
+    public function __construct(SearchAndSort $searchAndSort, User $user)
     {
         $this->user = $user;
+        $this->searchAndSort = $searchAndSort;
     }
 
-    public function index($searchAndSort, $request)
+    public function index($request)
     {
-        return $searchAndSort->execute($request, $this->user);
+        return $this->searchAndSort->execute($request, $this->user);
     }
 
     public function store($request)
     {
-        return $this->user::create($request->validated());
+        return $this->user::create($request);
     }
 
     public function update($request, $user)
     {
-        return $user->update($request->validated());
+        return $user->update($request);
     }
 
     public function destroy($user)

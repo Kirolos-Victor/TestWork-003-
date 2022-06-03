@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LectureIndexRequest;
 use App\Http\Requests\StoreLectureRequest;
 use App\Http\Requests\UpdateLectureRequest;
 use App\Http\Requests\UserRequest;
@@ -19,21 +20,21 @@ class LectureController extends Controller
         $this->lectureRepository = $lectureRepository;
     }
 
-    public function index(SearchAndSort $searchAndSort, Request $request)
+    public function index(LectureIndexRequest $request)
     {
-        $lectures = $this->lectureRepository->index($searchAndSort, $request);
+        $lectures = $this->lectureRepository->index($request->validated());
         return responseJson(200, 'success', $lectures);
     }
 
     public function store(StoreLectureRequest $request)
     {
-        $lecture = $this->lectureRepository->store($request);
+        $lecture = $this->lectureRepository->store($request->validated());
         return responseJson(200, 'Created successfully', $lecture);
     }
 
     public function update(UpdateLectureRequest $request, Lecture $lecture)
     {
-        $this->lectureRepository->update($request, $lecture);
+        $this->lectureRepository->update($request->validated(), $lecture);
         return responseJson(200, 'Updated successfully', $lecture);
     }
 
@@ -46,7 +47,7 @@ class LectureController extends Controller
     public function attachUser(UserRequest $request, Lecture $lecture)
     {
         $lecture->load('users');
-        $this->lectureRepository->attachUser($lecture, $request);
+        $this->lectureRepository->attachUser($lecture, $request->validated());
         return responseJson(200, 'Attached successfully', $lecture);
     }
 }
